@@ -6,7 +6,7 @@ from src.model import build_cnn
 import tensorflow as tf
 
 # Config
-DATA_DIR = "/home/technerd/Desktop/cell_images"
+DATA_DIR = "E:/fs/cell_images"
 CATEGORIES = ["Parasitized", "Uninfected"]
 IMG_SIZE = 64
 MODEL_PATH = "models/malaria_model.h5"
