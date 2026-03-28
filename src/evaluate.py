@@ -3,6 +3,7 @@ from src.preprocessing import preprocess_data, split_data
 from src.data_loader import load_images
 from sklearn.metrics import classification_report, confusion_matrix
 import numpy as np
+import os
 
 DATA_DIR = "C:/Users/Ernest/Downloads/archive/cell_images"
 CATEGORIES = ["Parasitized", "Uninfected"]
