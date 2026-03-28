@@ -6,10 +6,10 @@ from src.model import build_cnn
 import tensorflow as tf
 
 # Config
-DATA_DIR = "/home/technerd/Desktop/cell_images"
+DATA_DIR = r"C:\WORK\data\cell_images"
 CATEGORIES = ["Parasitized", "Uninfected"]
 IMG_SIZE = 64
-MODEL_PATH = "models/malaria_model.h5"
+MODEL_PATH = os.path.join("models", "malaria_model.h5")
 
 def train():
     print("Loading data...")

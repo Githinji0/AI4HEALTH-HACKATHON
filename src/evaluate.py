@@ -1,13 +1,14 @@
+import os
 from tensorflow.keras.models import load_model
 from src.preprocessing import preprocess_data, split_data
 from src.data_loader import load_images
 from sklearn.metrics import classification_report, confusion_matrix
 import numpy as np
 
-DATA_DIR = "/home/technerd/Desktop/cell_images"
+DATA_DIR = r"C:\WORK\data\cell_images"
 CATEGORIES = ["Parasitized", "Uninfected"]
 IMG_SIZE = 64
-MODEL_PATH = "models/malaria_model.h5"
+MODEL_PATH = os.path.join("models", "malaria_model.h5")
 
 def evaluate():
     print("Loading and preprocessing data...")
