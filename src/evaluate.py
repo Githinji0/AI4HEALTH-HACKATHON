@@ -4,7 +4,7 @@ from src.data_loader import load_images
 from sklearn.metrics import classification_report, confusion_matrix
 import numpy as np
 
-DATA_DIR = "/home/technerd/Desktop/cell_images"
+DATA_DIR = "E:/fs/cell_images"
 CATEGORIES = ["Parasitized", "Uninfected"]
 IMG_SIZE = 64
 MODEL_PATH = "models/malaria_model.h5"
