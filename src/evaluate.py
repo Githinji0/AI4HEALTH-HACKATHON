@@ -4,14 +4,20 @@ from src.data_loader import load_images
 from sklearn.metrics import classification_report, confusion_matrix
 import numpy as np
 
-DATA_DIR = "/home/technerd/Desktop/cell_images"
+DATA_DIR = "C:/Users/Ernest/Downloads/archive/cell_images"
 CATEGORIES = ["Parasitized", "Uninfected"]
 IMG_SIZE = 64
 MODEL_PATH = "models/malaria_model.h5"
 
 def evaluate():
+    data_dir = os.path.normpath(os.path.expanduser(DATA_DIR))
+    if not os.path.isdir(data_dir):
+        raise FileNotFoundError(
+            f"Data directory does not exist: {data_dir}. Please update DATA_DIR in src/train.py and src/evaluate.py to your dataset path."
+        )
+
     print("Loading and preprocessing data...")
-    data = load_images(DATA_DIR, CATEGORIES, IMG_SIZE)
+    data = load_images(data_dir, CATEGORIES, IMG_SIZE)
     X, y = preprocess_data(data)
     _, X_test, _, y_test = split_data(X, y)
 

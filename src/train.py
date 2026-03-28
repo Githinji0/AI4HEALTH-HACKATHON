@@ -6,14 +6,20 @@ from src.model import build_cnn
 import tensorflow as tf
 
 # Config
-DATA_DIR = "/home/technerd/Desktop/cell_images"
+DATA_DIR = "C:/Users/Ernest/Downloads/archive/cell_images"
 CATEGORIES = ["Parasitized", "Uninfected"]
 IMG_SIZE = 64
 MODEL_PATH = "models/malaria_model.h5"
 
 def train():
+    data_dir = os.path.normpath(os.path.expanduser(DATA_DIR))
+    if not os.path.isdir(data_dir):
+        raise FileNotFoundError(
+            f"Data directory does not exist: {data_dir}. Please update DATA_DIR in src/train.py and src/evaluate.py to your dataset path."
+        )
+
     print("Loading data...")
-    data = load_images(DATA_DIR, CATEGORIES, IMG_SIZE)
+    data = load_images(data_dir, CATEGORIES, IMG_SIZE)
 
     print("Preprocessing...")
     X, y = preprocess_data(data)
