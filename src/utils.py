@@ -1,6 +1,21 @@
 import numpy as np
 import cv2
 import tensorflow as tf
+import shap
+import matplotlib.pyplot as plt
+from io import BytesIO
+
+# -------------------------
+# Quality Control
+# -------------------------
+def check_image_quality(image):
+    """Checks if the image is blurry using the Variance of Laplacian method."""
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    variance = cv2.Laplacian(gray, cv2.CV_64F).var()
+    
+    # Threshold for blurriness (typical values between 60-100)
+    is_blurry = variance < 70
+    return is_blurry, variance
 
 # -------------------------
 # Image Preprocessing
@@ -10,6 +25,38 @@ def prepare_image(image, img_size):
     image = image / 255.0
     image = np.expand_dims(image, axis=0)
     return image
+
+
+# -------------------------
+# SHAP Explainability
+# -------------------------
+def get_shap_explanation(image_array, model):
+    """Generates SHAP values for a single image."""
+    # Use a background of zeros for the explainer (GradientExplainer is faster for deep learning)
+    background = np.zeros((1, 64, 64, 3))
+    explainer = shap.GradientExplainer(model, background)
+    
+    # Calculate SHAP values for the image
+    shap_values = explainer.shap_values(image_array)
+    
+    # SHAP returns a list for multi-output models, or a single array for binary
+    # In binary classification (sigmoid), it usually returns a single array
+    if isinstance(shap_values, list):
+        shap_values = shap_values[0]
+        
+    # Generate the SHAP image plot as a Matplotlib figure
+    # We need to reshape for the plot
+    plt.figure(figsize=(8, 8))
+    # Note: shap.image_plot handles normalization and visualization
+    shap.image_plot(shap_values, image_array, show=False)
+    
+    # Capture the plot to a buffer
+    buf = BytesIO()
+    plt.savefig(buf, format="png", bbox_inches='tight')
+    buf.seek(0)
+    plt.close()
+    
+    return buf
 
 
 # -------------------------
