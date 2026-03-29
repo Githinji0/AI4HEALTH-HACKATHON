@@ -397,7 +397,13 @@ div[data-baseweb="input"] {
 [data-testid="stDataFrame"] {
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    overflow: hidden;
+    overflow: visible;
+    padding-top: 0.2rem;
+}
+
+[data-testid="stDataFrame"] [data-testid="stElementToolbar"] {
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 [data-testid="stDataFrame"] [role="grid"] {
@@ -678,28 +684,7 @@ elif mode == "Patient Dashboard":
         st.markdown('<div class="card">', unsafe_allow_html=True)
         st.markdown('<p class="section-title">Recent Diagnoses</p>', unsafe_allow_html=True)
 
-        def style_diagnosis_cell(value):
-            text = str(value).strip().lower()
-            if text == 'parasitized':
-                return 'background-color: #FDECEA; color: #A32020; font-weight: 700;'
-            if text == 'uninfected':
-                return 'background-color: #EAF8F0; color: #1F7A4D; font-weight: 700;'
-            return ''
-
-        def style_severity_cell(value):
-            text = str(value).strip().lower()
-            if text == 'severe':
-                return 'background-color: #F9E3E3; color: #7A0000; font-weight: 700;'
-            if text in ('none', 'normal'):
-                return 'background-color: #E7F0FF; color: #0B4DA2; font-weight: 700;'
-            return ''
-
-        styled_df = (
-            df.style
-            .applymap(style_diagnosis_cell, subset=['diagnosis'])
-            .applymap(style_severity_cell, subset=['severity'])
-        )
-        st.dataframe(styled_df, use_container_width=True)
+        st.dataframe(df, use_container_width=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
         chart_data = df['diagnosis'].value_counts().rename_axis('Diagnosis').reset_index(name='Count')
